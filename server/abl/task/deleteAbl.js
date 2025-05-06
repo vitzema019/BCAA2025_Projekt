@@ -1,8 +1,17 @@
+/**
+ * @file deleteAbl.js
+ * @description Application Business Logic (ABL) for deleting a task.
+ *              Validates input and removes the task from persistent storage.
+ */
 const Ajv = require("ajv");
 const ajv = new Ajv();
 
 const taskDao = require("../../dao/task-dao.js");
 
+/**
+ * JSON Schema for input validation.
+ * - `id`: required string, exactly 32 characters long (ID of the task to delete)
+ */
 const schema = {
   type: "object",
   properties: {
@@ -12,12 +21,24 @@ const schema = {
   additionalProperties: false,
 };
 
+/**
+ * Handles deletion of a task by ID.
+ *
+ * @async
+ * @function DeleteAbl
+ * @param {import("express").Request} req - Express request object containing task ID in `req.body`
+ * @param {import("express").Response} res - Express response object
+ * @returns {void} Responds with:
+ *   - 200 and empty object on success,
+ *   - 400 if input validation fails,
+ *   - 500 on unexpected server error.
+ */
 async function DeleteAbl(req, res) {
   try {
-    // get request query or body
+    // Extract input data
     const reqParams = req.body;
 
-    // validate input
+    // Validate input
     const valid = ajv.validate(schema, reqParams);
     if (!valid) {
       res.status(400).json({
@@ -28,11 +49,21 @@ async function DeleteAbl(req, res) {
       return;
     }
 
-    // remove task from persistant storage
+    // Fetch task by ID
+    const task = taskDao.get(reqParams.id);
+    if (!task) {
+      res.status(404).json({
+        code: "taskNotFound",
+        order: `Task with id ${reqParams.id} not found`,
+      });
+      return;
+    }
+
+    // Remove the task
     taskDao.remove(reqParams.id);
 
-    // return properly filled dtoOut
-    res.json({});
+    // Respond with empty object
+    res.json({ task });
   } catch (e) {
     res.status(500).json({ message: e.message });
   }

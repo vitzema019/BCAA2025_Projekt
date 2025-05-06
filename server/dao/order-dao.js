@@ -19,13 +19,6 @@ function get(orderId) {
 // Method to write an order to a file
 function create(order) {
   try {
-    const orderList = list();
-    if (orderList.some((item) => item.name === order.name)) {
-      throw {
-        code: "uniqueNameAlreadyExists",
-        message: "exists order with given name",
-      };
-    }
     order.id = crypto.randomBytes(16).toString("hex");
     const filePath = path.join(orderFolderPath, `${order.id}.json`);
     const fileData = JSON.stringify(order);
