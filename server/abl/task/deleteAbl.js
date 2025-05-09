@@ -62,7 +62,7 @@ async function DeleteAbl(req, res) {
     // Remove the task
     taskDao.remove(reqParams.id);
 
-    // Respond with empty object
+    // Respond with task object with order
     res.json({ task });
   } catch (e) {
     res.status(500).json({ message: e.message });

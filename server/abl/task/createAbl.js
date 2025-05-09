@@ -59,7 +59,10 @@ async function CreateAbl(req, res) {
     }
 
     // Validate that the deadline is today or in the future
-    if (new Date(task.deadline) < new Date()) {
+    if (
+      new Date(task.deadline).setHours(0, 0, 0, 0) <
+      new Date().setHours(0, 0, 0, 0)
+    ) {
       res.status(400).json({
         code: "invalidDate",
         message: `deadline must be future date or current date`,

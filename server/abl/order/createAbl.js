@@ -56,8 +56,15 @@ async function CreateAbl(req, res) {
       return;
     }
 
+    console.log(order.dateOfCreation);
+    console.log(new Date(order.dateOfCreation).setHours(0, 0, 0, 0));
+    console.log(new Date().setHours(0, 0, 0, 0));
+
     // Validate that the deadline is today or in the future
-    if (new Date(order.dateOfCreation) > new Date()) {
+    if (
+      new Date(order.dateOfCreation).setHours(0, 0, 0, 0) >
+      new Date().setHours(0, 0, 0, 0)
+    ) {
       res.status(400).json({
         code: "invalidDate",
         message: `deadline must be past date or current date`,

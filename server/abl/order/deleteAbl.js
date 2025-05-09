@@ -76,7 +76,7 @@ async function DeleteAbl(req, res) {
     // Remove the order
     orderDao.remove(reqParams.id);
 
-    // Respond with empty object
+    // Respond with empty order with tasks
     res.json({
       order,
     });
