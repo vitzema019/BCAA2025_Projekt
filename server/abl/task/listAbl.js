@@ -38,7 +38,7 @@ const schema = {
  */
 async function ListAbl(req, res) {
   try {
-    const filter = req.query?.orderId ? req.query : req.body;
+    const filter = req.query?.orderId ? req.query : (req.body || {});
 
     // Validate input
     const valid = ajv.validate(schema, filter);
@@ -51,8 +51,17 @@ async function ListAbl(req, res) {
       return;
     }
 
-    // Retrieve filtered task list
-    const taskList = taskDao.listByOrderId(filter);
+    let taskList;
+
+    if (!filter.orderId) {
+      taskList = taskDao.list();
+    }
+    else {
+      // Retrieve filtered task list
+      taskList = taskDao.listByOrderId(filter);
+    }
+
+
 
     // Return result
     res.json({ itemList: taskList });
