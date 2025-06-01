@@ -1,70 +1,90 @@
-# Getting Started with Create React App
+# JOM – Frontend
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Tato aplikace představuje frontendovou část systému pro správu zakázek a úkolů (orders & tasks). Je vytvořená v Reactu a využívá komponenty z `react-bootstrap`. Backendová API volání jsou směrována přes proxy na port `8000`.
 
-## Available Scripts
+## 📁 Struktura projektu
 
-In the project directory, you can run:
+Projekt je rozdělen do složek dle doménových entit:
 
-### `npm start`
+```
+src/
+│
+├── order/               # Komponenty pro správu zakázek
+│   ├── dashboard-content.jsx
+│   ├── dashboard.jsx
+│   ├── order-delete-dialog.jsx
+│   ├── order-item-form.jsx
+│   ├── order-list-provider.jsx
+│   ├── order-list.jsx
+│   └── pending-item.jsx
+│
+├── task/                # Komponenty pro správu úkolů
+│   ├── dashboard-content.jsx
+│   ├── dashboard.jsx
+│   ├── order-task-list.jsx
+│   ├── task-delete-dialog.jsx
+│   ├── task-item-form.jsx
+│   ├── task-list-provider.jsx
+│   ├── task-list-readonly.jsx
+│   └── task-list.jsx
+│
+├── fetch-helper.js      # Pomocné funkce pro volání backend API
+├── index.js             # Vstupní bod aplikace
+├── layout.jsx           # Hlavní rozložení stránky
+├── navbar.jsx           # Navigační lišta
+└── setupProxy.js        # Proxy pro vývojové prostředí
+```
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## 🚀 Spuštění projektu
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### 1. Instalace závislostí
 
-### `npm test`
+```bash
+npm install
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### 2. Spuštění vývojového serveru
 
-### `npm run build`
+```bash
+npm start
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Tímto se spustí aplikace na `http://localhost:3000/`, přičemž všechna volání na `/api/*` budou proxyfikována na backend běžící na `http://localhost:8000`.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## 🔄 Navigace
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- `/` – Hlavní dashboard se seznamem zakázek
+- `/taskList` – Samostatný přehled všech úkolů (readonly)
 
-### `npm run eject`
+## 📦 Funkcionalita
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### Zakázky (Orders)
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- ✅ Vytvoření, úprava, smazání zakázky
+- ✅ Zobrazení seznamu všech zakázek
+- ✅ Zobrazení úkolů navázaných na zakázku
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### Úkoly (Tasks)
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+- ✅ Navázání úkolů na konkrétní zakázku (`orderId`)
+- ✅ Přidávání, úprava a mazání úkolů
+- ✅ Samostatný přehled všech úkolů s názvem zakázky (readonly režim)
 
-## Learn More
+## ⚙️ Proxy konfigurace
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Soubor `setupProxy.js` zajišťuje přesměrování API požadavků na backend:
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```javascript
+'/api' => 'http://localhost:8000'
+```
 
-### Code Splitting
+To umožňuje bezproblémovou komunikaci mezi frontendem a backendem během vývoje.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## 🧱 Použité technologie
 
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- React
+- React Bootstrap
+- React Router DOM
+- Context API (pro správu stavů)
+- Fetch API (`fetch-helper.js`)
+- Moderní JavaScript (ES6+)

@@ -15,7 +15,7 @@ function NavBar() {
       collapseOnSelect={true}
     >
       <Container>
-        <Navbar.Brand onClick={() => navigate("")}>FinMan</Navbar.Brand>
+        <Navbar.Brand onClick={() => navigate("")}>JOM</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" size="sm" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
